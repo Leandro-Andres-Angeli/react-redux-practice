@@ -1,12 +1,28 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { store } from '../store/store'
+
+import ListItem from './ListItem'
+import { List } from 'antd';
 
 const ListContainer = () => {
-    const todo = useSelector((state)=>state)
-    console.log(todo)
+    const {todo }= useSelector((state)=>state)
+   
   return (
-    <div>ListContainer</div>
+    <>
+   
+    <List   header={<div>Todo List</div>} 
+    
+    bordered
+    dataSource={todo}
+    renderItem={({id,todo}) => (
+      <List.Item key={id} style={{justifyContent:"start",gap:"10px",textTransform:"capitalize"}}>
+        <ListItem {...{id,todo}}></ListItem>
+      
+      </List.Item>
+    )}>
+     
+    </List>
+    </>
   )
 }
 
