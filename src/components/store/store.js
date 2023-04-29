@@ -13,6 +13,12 @@ export const showList = ()=>({type:types.showList})
 
 //ACTIONS
 //REDUCERS
+export const userReducer =(state={user:"none"},action)=>{
+    switch(action.type){
+    default:
+        return state
+    }
+}
 export  const todoReducer =(state=[listItemFunction("tarea 1"),listItemFunction("tarea-2"),listItemFunction("tarea-3")],action )=>{
     switch (action.type) {
         case types.showList:
@@ -29,6 +35,6 @@ export  const todoReducer =(state=[listItemFunction("tarea 1"),listItemFunction(
 }
 //REDUCERS
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
- const reducers =combineReducers({todo:todoReducer})
+ const reducers =combineReducers({todo:todoReducer,user:userReducer})
  
 export const store = createStore(reducers,composeEnhancers())
