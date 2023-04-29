@@ -21,9 +21,9 @@ const ListItem = ({ id, todo }) => {
     
   };
   const handleInputChange =()=>{
-    console.log("input change")
+    // console.log("input change")
      const {input : {value}} = inputRef.current;
-      
+          
      const {todo} = currentTodo
      setInputValue(value) 
      setSaveVisibility( todo === value   )
@@ -31,7 +31,11 @@ const ListItem = ({ id, todo }) => {
   const handleSave = ()=>{
     console.log("save")
   }
-  const handleOnBlur = ()=>{
+  const handleOnBlur = (e)=>{
+    if( e.relatedTarget.dataset.type === `save-btn-${id}` ){
+      console.log("same btn")
+      return
+    }
     console.log("blur")
     // inputRef.current.input.value ="fodsfndsinin"
     setInputValue(todo)
@@ -64,6 +68,7 @@ const ListItem = ({ id, todo }) => {
       <Button
         style={{transition:"opacity .3s ease",...saveVisibility ? {opacity:0} :{ opacity:1} }}
         onClick={handleSave}
+        data-type={`save-btn-${id}`}
         type="primary"
         icon={<SaveOutlined />}
       />
