@@ -1,4 +1,4 @@
-.ant-list-items{
+.navbar  .ant-list-items{
     display: flex;
     gap:1rem
 }

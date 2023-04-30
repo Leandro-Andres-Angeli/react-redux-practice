@@ -7,7 +7,7 @@ import "../styles/navbar-styles.css"
 const Navbar = () => {
     const links =[ "todo-list","users-list"]
   return (
-    <nav style={{ backgroundColor: blue[5] , padding:"1rem",color:"white" }}>
+    <nav className="navbar" style={{ backgroundColor: blue[5] , padding:"1rem",color:"white" }}>
   <Typography.Title level={3} style={{color:"white"}}>
     Redux And Reducer Practice
   </Typography.Title>
