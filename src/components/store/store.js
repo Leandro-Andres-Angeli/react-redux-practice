@@ -1,5 +1,6 @@
 import { combineReducers, compose, createStore } from "redux";
 import { listItemFunction } from "../../helpers/listItemGenerator";
+import { usersListReducer } from "./users-list-store/usersListReducers";
 
 export const types = {
   showList: "[Todo List] show list",
@@ -54,6 +55,6 @@ export const todoReducer = (
 };
 //REDUCERS
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const reducers = combineReducers({ todo: todoReducer, user: userReducer });
+const reducers = combineReducers({ todo: todoReducer, user: userReducer,usersList:usersListReducer });
 
 export const store = createStore(reducers, composeEnhancers());
