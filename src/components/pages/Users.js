@@ -28,11 +28,11 @@ const UsersListItem = ({ user }) => {
     uiState,
     resetUiActions
   );
-  const [form] = Form.useForm()
-  const [formState, setFormState] = useState({
-    name: user.name,
-    username: user.username,
-  });
+  const [form] = Form.useForm();
+  // const [formState, setFormState] = useState({
+  //   name: user.name,
+  //   username: user.username,
+  // });
 
   // return (
   //   <List.Item>
@@ -49,58 +49,65 @@ const UsersListItem = ({ user }) => {
   const { editMode } = uiActions;
   const handleSubmit = (e) => {
     console.log("sub");
-    console.log(e)
-    console.log(form.getFieldsValue())
+    console.log(e);
+    console.log(form.getFieldsValue());
   };
   const handleEdit = () => {
     console.log("edit");
     dispatchUiActions({ type: types.toggleEditMode });
   };
-  const handleInputChange = ({ target }) => {
-    console.log( form.getFieldsValue())
-    // (()=>( setFormState((prev) => ({
-    //   ...prev,
-    //   [target.name]: target.value.trim(),
-    // })), dispatchUiActions({type:types.checkChangedValues,
-    //   payload: JSON.stringify(formState) ===
-    //     JSON.stringify({ name: user.name, username: user.username })}
-    // )) )()
+  const handleInputChange = () => {
+    const formValues = form.getFieldsValue();
+    // console.log(formValues)
+    //  const trimmedForm =   Object.keys(formValues).
+
+    //  console.log(trimmedForm)
+    const trimmedForm = Object.keys(formValues).reduce(
+      (acc, curr, arr) => ({ ...acc, [curr]: formValues[curr].trim() }),
+      {}
+    );
+
+    const checkIfValuedChanged =
+      JSON.stringify(trimmedForm) ===
+      JSON.stringify({ name: user.name, username: user.username });
+    dispatchUiActions({
+      type: types.checkChangedValues,
+      payload: !checkIfValuedChanged,
+    });
   };
-  const handleFieldsChange = (e) => {
-    console.log(e)
-    console.log("change");
-  };
+  // const handleFieldsChange = (e) => {
+  //   console.log(e)
+  //   console.log("change");
+  // };
   return (
     <List.Item>
       <div> {JSON.stringify(uiActions)}</div>
 
       <Form
         onFinish={handleSubmit}
-      form={form}
-      initialValues={{ name : user.name , username : user.username }}
-      // onFieldsChange={handleFieldsChange}
-      // onValuesChange={handleFieldsChange}
+        form={form}
+        initialValues={{ name: user.name, username: user.username }}
       >
         <fieldset style={{ border: "none" }} disabled={!editMode}>
           {Object.entries(user)
             .filter(([field]) => field !== "id")
             .map(([field, value]) => (
-              <Form.Item key={field} label={field}
-              name={field}
-             
-              onChange={handleInputChange}
+              <Form.Item
+                key={field}
+                label={field}
+                name={field}
+                onChange={handleInputChange}
               >
-                <Input
-                
-                // defaultValue={value}
-                 
-                
-                />
+                <Input />
               </Form.Item>
             ))}
         </fieldset>
         <Space>
-          <Button type="primary" disabled={!editMode} htmlType="submit">
+          <Button
+            type="primary"
+            disabled={!uiActions.changedValues}
+            htmlType="submit"
+          >
             Submit
           </Button>
           <Button
