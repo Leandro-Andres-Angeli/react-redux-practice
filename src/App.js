@@ -2,12 +2,15 @@
 import { Typography  } from 'antd';
 import ListContainer from "./components/list/ListContainer";
 import FormComponent from "./components/FormComponent";
+import Navbar from './components/Navbar';
+
 
 
 export default function App() {
   const {Title} =Typography
   return(
     <div >
+      <Navbar></Navbar> 
       <FormComponent></FormComponent>
     <Title >React Redux Practice</Title>
     <div>
