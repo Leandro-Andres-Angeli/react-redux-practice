@@ -1,68 +1,117 @@
 import { green, red } from "@ant-design/colors";
-import { Button, Divider, Form, Input, List, Typography } from "antd";
+import { Button, Divider, Form, Input, List, Space, Typography } from "antd";
 
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { store } from "../store/store";
 const uiState = {
-  editMode:false,
-}
-const resetUiActions = ()=>uiState
+  editMode: false,
+  changedValues: false,
+};
+const resetUiActions = () => uiState;
 const types = {
-  toggleEditMode:'edit mode one'
-}
-const uiReducer = (state,action)=>{
-  switch (action.type){
-    case types.toggleEditMode :
-    return {...state,editMode: !state.editMode  }
+  toggleEditMode: "edit mode one",
+  checkChangedValues: "check changed values",
+};
+const uiReducer = (state, action) => {
+  switch (action.type) {
+    case types.toggleEditMode:
+      return { ...state, editMode: !state.editMode };
+    case types.checkChangedValues:
+      return { ...state, changedValues: action.payload };
     default:
-      return state
+      return state;
   }
-  
-
-}
+};
 const UsersListItem = ({ user }) => {
-  const [uiActions , dispatchUiActions] = useReducer(uiReducer,uiState,resetUiActions)
+  const [uiActions, dispatchUiActions] = useReducer(
+    uiReducer,
+    uiState,
+    resetUiActions
+  );
+  const [form] = Form.useForm()
+  const [formState, setFormState] = useState({
+    name: user.name,
+    username: user.username,
+  });
+
   // return (
   //   <List.Item>
   //     <List
-     
+
   //   dataSource={Object.entries(user)}
   //       renderItem={ ([field,data])=> (
   //         <List.Item >{field} : {data}</List.Item>
   //       )}
   //     />
 
-    
   //   </List.Item>
   // );
-  const {editMode} = uiActions
-  const handleSubmit=()=>{
-    console.log("sub")
-  }
-  const handleEdit = ()=>{
-    console.log('edit')
-    dispatchUiActions({type : types.toggleEditMode})
-    
-  }
+  const { editMode } = uiActions;
+  const handleSubmit = (e) => {
+    console.log("sub");
+    console.log(e)
+    console.log(form.getFieldsValue())
+  };
+  const handleEdit = () => {
+    console.log("edit");
+    dispatchUiActions({ type: types.toggleEditMode });
+  };
+  const handleInputChange = ({ target }) => {
+    console.log( form.getFieldsValue())
+    // (()=>( setFormState((prev) => ({
+    //   ...prev,
+    //   [target.name]: target.value.trim(),
+    // })), dispatchUiActions({type:types.checkChangedValues,
+    //   payload: JSON.stringify(formState) ===
+    //     JSON.stringify({ name: user.name, username: user.username })}
+    // )) )()
+  };
+  const handleFieldsChange = (e) => {
+    console.log(e)
+    console.log("change");
+  };
   return (
     <List.Item>
       <div> {JSON.stringify(uiActions)}</div>
-    
-       <Form onFinish={handleSubmit}> 
-        <fieldset style={{border:"none"}} disabled = {!editMode}>
-        {Object.entries(user).filter(([field])=> field !== "id").map(([field,value])=>
-      ( <Form.Item key={field} label={field} >
-         <Input defaultValue={value} />
-      </Form.Item>
-       ))}
-       </fieldset>
-       
-       <Button type="primary"   disabled = {!editMode} htmlType="submit">Submit</Button>
-       <Button style={{backgroundColor:green[3],color:"white"}}  onClick={handleEdit} >Edit</Button>
-       <Button  danger >Delete</Button>
-       
-       </Form>
-    
+
+      <Form
+        onFinish={handleSubmit}
+      form={form}
+      initialValues={{ name : user.name , username : user.username }}
+      // onFieldsChange={handleFieldsChange}
+      // onValuesChange={handleFieldsChange}
+      >
+        <fieldset style={{ border: "none" }} disabled={!editMode}>
+          {Object.entries(user)
+            .filter(([field]) => field !== "id")
+            .map(([field, value]) => (
+              <Form.Item key={field} label={field}
+              name={field}
+             
+              onChange={handleInputChange}
+              >
+                <Input
+                
+                // defaultValue={value}
+                 
+                
+                />
+              </Form.Item>
+            ))}
+        </fieldset>
+        <Space>
+          <Button type="primary" disabled={!editMode} htmlType="submit">
+            Submit
+          </Button>
+          <Button
+            style={{ backgroundColor: green[3], color: "white" }}
+            onClick={handleEdit}
+          >
+            Edit
+          </Button>
+          <Button danger>Delete</Button>
+        </Space>
+      </Form>
     </List.Item>
   );
 };
