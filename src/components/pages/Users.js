@@ -8,9 +8,9 @@ const UsersListItem = ({ user }) => {
     <List.Item>
       <List
      
-   
-        renderItem={ ()=> (
-          <List.Item >"data"</List.Item>
+    dataSource={Object.entries(user)}
+        renderItem={ ([field,data])=> (
+          <List.Item >{field} : {data}</List.Item>
         )}
       />
 
