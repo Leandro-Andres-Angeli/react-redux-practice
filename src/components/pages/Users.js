@@ -1,7 +1,7 @@
 import { green, red } from "@ant-design/colors";
 import { Button, Divider, Form, Input, List, Space, Typography } from "antd";
 
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
 import { store } from "../store/store";
 const uiState = {
   editMode: false,
@@ -29,6 +29,7 @@ const UsersListItem = ({ user }) => {
     resetUiActions
   );
   const [form] = Form.useForm();
+  const formRef = useRef()
   // const [formState, setFormState] = useState({
   //   name: user.name,
   //   username: user.username,
@@ -52,9 +53,11 @@ const UsersListItem = ({ user }) => {
     console.log(e);
     console.log(form.getFieldsValue());
   };
-  const handleEdit = () => {
+  const handleEdit = (e) => {
     console.log("edit");
     dispatchUiActions({ type: types.toggleEditMode });
+   
+    
   };
   const handleInputChange = () => {
     const formValues = form.getFieldsValue();
@@ -85,8 +88,10 @@ const UsersListItem = ({ user }) => {
 
       <Form
         onFinish={handleSubmit}
+      
         form={form}
         initialValues={{ name: user.name, username: user.username }}
+        focus={(uiActions.editMode).toString()}
       >
         <fieldset style={{ border: "none" }} disabled={!editMode}>
           {Object.entries(user)
