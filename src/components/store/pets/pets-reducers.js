@@ -16,7 +16,8 @@ export const petsReducer = (state = initialState, action) => {
 
     case types.delete:
       return state.filter((pet) => pet.id !== action.payload.id);
-
+    case types.add:
+      return [...state, { ...action.payload }];
     default:
       return state;
   }
